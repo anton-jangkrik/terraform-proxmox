@@ -14,8 +14,10 @@ variable "ci_user" {
 variable "ci_password" {
   type        = string
   sensitive   = true
-}variable "ci_ssh_public_key" {
+}
+variable "ci_ssh_public_key" {
   type        = string
-}variable "ci_ssh_private_key" {
+}
+variable "ci_ssh_private_key" {
   type        = string
 }
