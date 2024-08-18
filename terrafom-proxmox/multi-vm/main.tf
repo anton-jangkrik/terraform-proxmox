@@ -18,8 +18,9 @@ provider "proxmox" {
 
 
 resource "proxmox_vm_qemu" "vm" {
-    vmid    = 100
-    name    = "demo-vm"
+    count = var.vm_count
+    vmid    = 100 + (count.index + 1)
+    name    = "demo-vm-${count.index + 1}"
     target_node = "pve3"
 
     clone   = "ubuntu-jammy"
@@ -63,10 +64,12 @@ resource "proxmox_vm_qemu" "vm" {
     network {
       model = "virtio"
       bridge = "vmbr0"
+      tag = "103"
     }
  lifecycle {
    ignore_changes = [ 
     network
     ]
  }
+
 }
