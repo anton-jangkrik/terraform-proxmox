@@ -16,7 +16,6 @@ provider "proxmox" {
 
 }
 
-
 resource "proxmox_vm_qemu" "vm" {
     count = var.vm_count
     vmid    = 100 + (count.index + 1)
@@ -72,4 +71,13 @@ resource "proxmox_vm_qemu" "vm" {
     ]
  }
 
+}
+
+output "vm_info" {
+  value = [
+    for vm in proxmox_vm_qemu.vm : {
+      hostname = vm.name
+      ip-addr = vm.default_ipv4_address
+    }
+  ]
 }
