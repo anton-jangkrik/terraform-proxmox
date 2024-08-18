@@ -38,11 +38,27 @@ resource "proxmox_vm_qemu" "vm" {
     scsihw = "virtio-scsi-pci"
     ipconfig0 = "ip=dhcp"
 
+     # Setup the disk
     disks {
-      size = "10G"
-      type = "scsi"
-      storage = "local-lvm"
+        ide {
+            ide3 {
+                cloudinit {
+                    storage = "local-lvm"
+                }
+            }
+        }
+        virtio {
+            virtio0 {
+                disk {
+                    size            = 10
+                    storage         = "locsl-lvm"
+                    iothread        = true
+                    discard         = true
+                }
+            }
+        }
     }
+    
     
     network {
       model = "virtio"
