@@ -10,11 +10,12 @@ terraform {
 provider "proxmox" {
   # Configuration options
   pm_api_url    = var.proxmox_api_url
-  pm_api_tok_id = var.proxmox_api_token_id
+  pm_api_token_id = var.proxmox_api_token_id
   pm_api_token_secret = var.proxmox_api_token_secret
   pm_tls_insecure = true
 
 }
+
 
 resource "proxmox_vm_qemu" "vm" {
     vmid    = 100
@@ -23,15 +24,13 @@ resource "proxmox_vm_qemu" "vm" {
 
     clone   = "ubuntu-jammy"
     full_clone  = true
-
     os_type = "cloud-init"
-    cloudinit_cdrom_storage = "local-lvm"
-    
+
     ciuser = var.ci_user
     cipassword = var.ci_password
     sshkeys = file(var.ci_ssh_public_key)
 
-    cores = 1
+    cores = 2
     memory = 1024
     agent = 1
 
@@ -44,6 +43,7 @@ resource "proxmox_vm_qemu" "vm" {
       type = "scsi"
       storage = "local-lvm"
     }
+    
     network {
       model = "virtio"
       bridge = "vmbr0"
@@ -54,4 +54,3 @@ resource "proxmox_vm_qemu" "vm" {
     ]
  }
 }
-
